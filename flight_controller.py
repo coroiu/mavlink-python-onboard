@@ -26,8 +26,10 @@ class FlightController:
 
     # request data to be sent at the given rate
     # This is actually deprecated, switch to using MAV_CMD_SET_MESSAGE_INTERVAL
-    self.rate = 4 # 4hz
-    self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, self.rate, 1)
+    self.rate = 1 # 4hz
+    #self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, self.rate, 1)
+    self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_EXTENDED_STATUS	, self.rate, 1)
+    self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_POSITION, self.rate, 1)
     self.controller.wait_heartbeat()
 
     # enter the data loop
@@ -43,9 +45,9 @@ class FlightController:
     self.is_armed = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED
     self.is_enabled = msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_GUIDED_ENABLED
 
-    if not old_armed and self.is_armed:
-      print "requesting stream"
-      self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, self.rate, 1)
+    #if not old_armed and self.is_armed:
+    #  print "requesting stream"
+    #  self.controller.mav.request_data_stream_send(self.controller.target_system, self.controller.target_component, mavutil.mavlink.MAV_DATA_STREAM_ALL, self.rate, 1)
 
   def handle_hud(self, msg):
     # VFR_HUD {airspeed : 0.0, groundspeed : 0.0, heading : 230, throttle : 0, alt : 0.0, climb : 0.019999999553}
